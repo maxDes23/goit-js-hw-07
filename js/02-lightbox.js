@@ -1,4 +1,48 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
+const gallery = document.querySelector(".gallery");
+const galleryMarkup = createGallery(galleryItems);
+gallery.insertAdjacentHTML("beforeend", galleryMarkup);
 
+function createGallery(items) {
+  return items
+    .map(({ preview, original, description }) => {
+      return `
+      <li class="gallery__item">
+   <a class="gallery__link" href="${original}">
+      <img class="gallery__image" src="${preview}"  data-source="${original}" alt="${description}"  />
+   </a>
+</li>
+      `;
+    })
+    .join("");
+}
+
+gallery.addEventListener("click", onGalleryItemClick);
+
+function onGalleryItemClick(evt) {
+  evt.preventDefault();
+
+  if (evt.target.nodeName !== "IMG") {
+    return;
+  }
+
+  const largeImageUrl = evt.target.dataset.source;
+  const instance = new SimpleLightbox(".gallery__item a", {
+    navText: ["←", "→"],
+  });
+
+  instance.show();
+
+  document.addEventListener("keydown", (evt) => {
+    if (evt.code === "Escape") {
+      instance.close();
+    }
+  });
+}
+new SimpleLightbox(".gallery__link", {
+  navText: ["←", "→"],
+  captionsData: "alt",
+  captionDelay: 250,
+});
 console.log(galleryItems);
