@@ -1,5 +1,4 @@
 import { galleryItems } from "./gallery-items.js";
-// Change code below this line
 
 const gallery = document.querySelector(".gallery");
 const galleryMarkup = createGallery(galleryItems);
@@ -35,15 +34,25 @@ function onGalleryItemClick(evt) {
 
   const largeImageUrl = evt.target.dataset.source;
 
-  const instance = basicLightbox.create(`
-    <img src="${largeImageUrl}" width="800" height="600" style="border-radius: 10px;" >
-  `);
+  const instance = basicLightbox.create(
+    `<img src="${largeImageUrl}" width="800" height="600" style="border-radius: 10px;">`,
+    {
+      onShow: (instance) => {
+        document.addEventListener("keydown", (evt) => {
+          if (evt.code === "Escape") {
+            instance.close();
+          }
+        });
+      },
+      onClose: (instance) => {
+        document.removeEventListener("keydown", (evt) => {
+          if (evt.code === "Escape") {
+            instance.close();
+          }
+        });
+      },
+    }
+  );
 
   instance.show();
-
-  document.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape") {
-      instance.close();
-    }
-  });
 }

@@ -18,28 +18,7 @@ function createGallery(items) {
     .join("");
 }
 
-gallery.addEventListener("click", onGalleryItemClick);
 
-function onGalleryItemClick(evt) {
-  evt.preventDefault();
-
-  if (evt.target.nodeName !== "IMG") {
-    return;
-  }
-
-  const largeImageUrl = evt.target.dataset.source;
-  const instance = new SimpleLightbox(".gallery__item a", {
-    navText: ["←", "→"],
-  });
-
-  instance.show();
-
-  document.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape") {
-      instance.close();
-    }
-  });
-}
 new SimpleLightbox(".gallery__link", {
   navText: ["←", "→"],
   captionsData: "alt",
